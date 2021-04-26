@@ -1,0 +1,61 @@
+.then((answer) => {
+      console.log(answer.firstname);
+      connection.query(
+          'INSERT INTO employee(first_name, last_name, title_id, manager_id)'
+      )
+
+// start up questions
+choices: ["Add an employee", "Add a title", "Add a department", "Update an employee", "View all employees", "View all titles", "View all departments"]
+
+// additional start up question options
+    .then((answer) => {
+      switch (answer.action) {
+        case "Add an employee":
+          addEmployee();
+          break;
+
+        case "Add a title":
+          addTitle();
+          break;
+
+        case "Add a department":
+          addDepartment();
+          break;
+
+        case "Update an employee":
+          updateEmployee();
+          break;
+
+        case "View all employees":
+          viewAllEmployees();
+          break;
+
+        case "View all titles":
+          viewAllTitles();
+          break;
+
+        case "View all departments":
+          viewAllDepartments();
+          break;
+
+        default:
+          console.log(`Invalid action: ${answer.action}`);
+          break;
+      }
+    });
+};
+
+// add employee options
+
+    {
+      name: "title",
+      type: "list",
+      message: "What is the new employee's title?",
+      choices: selectTitle()
+    },
+    {
+      name: "manager",
+      type: "list",
+      message: "Who is the new employee's manager?",
+      choices: selectManager()
+    },
