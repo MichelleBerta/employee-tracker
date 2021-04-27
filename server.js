@@ -61,7 +61,12 @@ function addEmployee() {
 
   ]).then((answer) => {
     console.log(answer.firstname);
-    connection.query("INSERT INTO employee(first_name, last_name)VALUES ?"), ('first_name', 'last_name')
+    connection.query("INSERT INTO employee ('first_name', 'last_name'), VALUES (?, ?)",[answer.firstname, answer.lastname], (err, results) => {
+      if (err) {
+      console.log(err)
+      }
+      console.log(results)
+    })
   })
-    
+
 }
