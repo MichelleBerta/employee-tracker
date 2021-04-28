@@ -28,13 +28,17 @@ const startProgram = () => {
       name: "action",
       type: "list",
       message: "What would you like to do?",
-      choices: ["Add an employee"],
+      choices: ["Add an employee", "Update an empoloyee"],
     })
 
     .then((answer) => {
       switch (answer.action) {
         case "Add an employee":
           addEmployee();
+          break;
+
+        case "Update an employee":
+          updateEmployee();
           break;
 
         default:
@@ -47,26 +51,55 @@ const startProgram = () => {
 // ADD EMPLOYEE
 
 function addEmployee() {
-  inquirer.prompt([
-    {
-      name: "firstname",
-      type: "input",
-      message: "What is the new employee's first name?",
-    },
-    {
-      name: "lasttname",
-      type: "input",
-      message: "What is the new employee's last name?",
-    },
+  inquirer
+    .prompt([
+      {
+        name: "firstname",
+        type: "input",
+        message: "What is the new employee's first name?",
+      },
+      {
+        name: "lastname",
+        type: "input",
+        message: "What is the new employee's last name?",
+      },
+    ])
+    .then((answer) => {
+      console.log(answer.firstname);
+      connection.query("INSERT INTO employee (first_name, last_name, manager_id, title_id) VALUES (?, ?, ?, ?)", [answer.firstname, answer.lastname, 1, 1], (err, results) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(results);
+        startProgram();
+      });
+    });
+}
+// UPDATE AN EMPLOYEE
+function updateEmployee() {
+  inquirer
+    .prompt([
+      {
+        name: "employeeUpdate",
+        type: "list",
+        message: "What would you like to update?",
+        choices: ["first name", "last name"],
+      },
+      {
+        name: "updatedValue",
+        type: "input",
+        messages: "What is the updated value?",
+      },
+    ])
+    .then((answer) => {
+      console.log(answer.employeeUpdate);
+      console.log(answer.updatedValue);
 
-  ]).then((answer) => {
-    console.log(answer.firstname);
-    connection.query("INSERT INTO employee ('first_name', 'last_name'), VALUES (?, ?)",[answer.firstname, answer.lastname], (err, results) => {
-      if (err) {
-      console.log(err)
-      }
-      console.log(results)
-    })
-  })
-
+      // connection.query("INSERT INTO employee ('first_name', 'last_name'), VALUES (?, ?)",[answer.firstname, answer.lastname], (err, results) => {
+      //   if (err) {
+      //   console.log(err)
+      //   }
+      //   console.log(results)
+      // })
+    });
 }
