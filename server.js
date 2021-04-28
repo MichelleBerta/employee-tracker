@@ -20,86 +20,71 @@ connection.connect((err) => {
   startProgram();
 });
 
-// WHAT DO YOU WANT TO DO?
-
 const startProgram = () => {
   inquirer
     .prompt({
       name: "action",
       type: "list",
       message: "What would you like to do?",
-      choices: ["Add an employee", "Update an empoloyee"],
+      choices: ["Add a department", "Add a title"],
     })
-
     .then((answer) => {
       switch (answer.action) {
-        case "Add an employee":
-          addEmployee();
+        case "Add a department":
+          addDepartment();
           break;
-
-        case "Update an employee":
-          updateEmployee();
+        case "Add a title":
+          addTitle();
           break;
-
         default:
           console.log(`Invalid action: ${answer.action}`);
           break;
       }
     });
 };
-
-// ADD EMPLOYEE
-
-function addEmployee() {
+function addDepartment() {
   inquirer
-    .prompt([
-      {
-        name: "firstname",
-        type: "input",
-        message: "What is the new employee's first name?",
-      },
-      {
-        name: "lastname",
-        type: "input",
-        message: "What is the new employee's last name?",
-      },
-    ])
+    .prompt({
+      name: "newDepartment",
+      type: "input",
+      message: "Department Name: ",
+    })
     .then((answer) => {
-      console.log(answer.firstname);
-      connection.query("INSERT INTO employee (first_name, last_name, manager_id, title_id) VALUES (?, ?, ?, ?)", [answer.firstname, answer.lastname, 1, 1], (err, results) => {
+      console.log(answer.newDepartment);
+      connection.query("INSERT INTO department (department_name) VALUES (?)", [answer.newDepartment], (err, results) => {
         if (err) {
           console.log(err);
         }
-        console.log(results);
         startProgram();
       });
     });
 }
-// UPDATE AN EMPLOYEE
-function updateEmployee() {
+
+function addTitle() {
   inquirer
     .prompt([
       {
-        name: "employeeUpdate",
-        type: "list",
-        message: "What would you like to update?",
-        choices: ["first name", "last name"],
-      },
-      {
-        name: "updatedValue",
-        type: "input",
-        messages: "What is the updated value?",
-      },
-    ])
+      name: "newTitle",
+      type: "input",
+      message: "Title: ",
+    },
+    {
+      name: "newSalary",
+      type: "input",
+      message: "Salary: ",
+    },
+    {
+      name: "newDepartment",
+      type: "input",
+      message: "Department: ",
+    }
+  ])
     .then((answer) => {
-      console.log(answer.employeeUpdate);
-      console.log(answer.updatedValue);
-
-      // connection.query("INSERT INTO employee ('first_name', 'last_name'), VALUES (?, ?)",[answer.firstname, answer.lastname], (err, results) => {
-      //   if (err) {
-      //   console.log(err)
-      //   }
-      //   console.log(results)
-      // })
+      connection.query("INSERT INTO title (title, salary, DEPARTMENT????) VALUES (?, ?, ?)", [answer.newTitle, answer.newSalary, answer.newDepartment], (err, results) => {
+        if (err) {
+          console.log(err);
+        }
+        startProgram();
+      });
     });
 }

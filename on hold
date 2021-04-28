@@ -59,3 +59,16 @@ choices: ["Add an employee", "Add a title", "Add a department", "Update an emplo
       message: "Who is the new employee's manager?",
       choices: selectManager()
     },
+
+
+// SEEDS
+
+// EMPLOYEE SEEDS
+INSERT INTO employee(first_name, last_name, manager_id, title_id)
+VALUES
+('John', 'Bosworth', null, 1),
+('Gordon', 'Clark', 1, 2),
+('Donna', 'Clark', 1, 2),
+('Cameron', 'Howe', 2, 3),
+('Joe', 'McMillan', 1, 4)
+
