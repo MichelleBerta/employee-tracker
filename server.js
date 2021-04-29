@@ -19,14 +19,14 @@ connection.connect((err) => {
   if (err) throw err;
   startProgram();
 });
-
+//  INITIATE PROGRAM
 const startProgram = () => {
   inquirer
     .prompt({
       name: "action",
       type: "list",
       message: "What would you like to do?",
-      choices: ["Add an employee", "Add a title", "Add a department", "Update an employee", "View all employees", "View all employees by title", "View all employees by department"]
+      choices: ["Add an employee", "Add a title", "Add a department", "Update an employee", "View all employees", "View all employees by title", "View all employees by department"],
     })
     .then((answer) => {
       switch (answer.action) {
@@ -65,6 +65,7 @@ const startProgram = () => {
     });
 };
 
+// ADD DEPARTMENT
 function addDepartment() {
   inquirer
     .prompt({
@@ -82,7 +83,8 @@ function addDepartment() {
       });
     });
 }
-// NEED TO ADD DEPARTMENT ID
+
+// ADD TITLE - NEED TO ADD DEPARTMENT ID
 function addTitle() {
   inquirer
     .prompt([
@@ -99,6 +101,31 @@ function addTitle() {
     ])
     .then((answer) => {
       connection.query("INSERT INTO title (title, salary,) VALUES (?, ?)", [answer.newTitle, answer.newSalary], (err, results) => {
+        if (err) {
+          console.log(err);
+        }
+        startProgram();
+      });
+    });
+}
+
+// ADD EMPLOYEE - NEED TO ADD TITLE
+function addEmployee() {
+  inquirer
+    .prompt([
+      {
+        name: "firstName",
+        type: "input",
+        message: "First Name: ",
+      },
+      {
+        name: "lastName",
+        type: "input",
+        message: "Last Name: ",
+      },
+    ])
+    .then((answer) => {
+      connection.query("INSERT INTO employee (first_name, last_name,) VALUES (?, ?)", [answer.firstName, answer.lastName], (err, results) => {
         if (err) {
           console.log(err);
         }
