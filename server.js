@@ -189,26 +189,42 @@ const updateEmployee = () => {
         },
         message: "Which employee would you like to update?",
       },
-      
-      function chosenEmployee() {
-        inquirer
-        .prompt({
-          name:"action",
-          type: "list",
-          message: "What do you need to update?",
-          choices: ["Change title"],
-        })
-      }
-      .then((answer) => {
-        switch (answer.action) {
-          case "Change title":
-            changeTitle();
-            break;
-            default:
-            console.log(`Invalid action: ${answer.action}`);
-            break;
-        }
-      }),
+      {
+        name: "action",
+        type: "list",
+        message: "What do you need to update?",
+        choices: ["Change title"],
+      },
+
+      // .then((answer) => {
+      //   switch (answer.action) {
+      //     case "Change title":
+      //       changeTitle();
+      //       break;
+      //       default:
+      //       console.log(`Invalid action: ${answer.action}`);
+      //       break;
+      //   }
+      // }),
     ]);
   });
 };
+
+// CHANGE TITLE
+function changeTitle() {
+  inquirer
+    .prompt({
+      name: "newTitle",
+      type: "list",
+      message: "Title: ",
+      choices: ["1-Sr. V.P.", "2-Engineer", "3-Developer", "4-Sales Executive", "5-Manager"],
+    })
+    .then((answer) => {
+      connection.query("INSERT INTO employee (title_id) VALUES (?)", [answer.newTitle.split("-")[0]], (err, results) => {
+        if (err) {
+          console.log(err);
+        }
+        startProgram();
+      });
+    });
+}
