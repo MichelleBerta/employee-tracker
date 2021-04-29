@@ -171,3 +171,44 @@ function viewAllEmployees() {
     startProgram();
   });
 }
+
+// UPDATE EMPLOYEE
+const updateEmployee = () => {
+  connection.query("SELECT first_name, last_name FROM employee", (err, results) => {
+    if (err) throw err;
+    inquirer.prompt([
+      {
+        name: "choice",
+        type: "rawlist",
+        choices() {
+          const choiceArray = [];
+          results.forEach(({ first_name, last_name }) => {
+            choiceArray.push(`${first_name} ${last_name}`);
+          });
+          return choiceArray;
+        },
+        message: "Which employee would you like to update?",
+      },
+      
+      function chosenEmployee() {
+        inquirer
+        .prompt({
+          name:"action",
+          type: "list",
+          message: "What do you need to update?",
+          choices: ["Change title"],
+        })
+      }
+      .then((answer) => {
+        switch (answer.action) {
+          case "Change title":
+            changeTitle();
+            break;
+            default:
+            console.log(`Invalid action: ${answer.action}`);
+            break;
+        }
+      }),
+    ]);
+  });
+};
