@@ -35,26 +35,27 @@ CREATE TABLE employee (
 // DEPARTMENT SEEDS
 INSERT INTO department(department_name)
 VALUES
-("Management"),
-("Development"),
-("IT"),
-("Sales");
+("500-Management"),
+("200-Development"),
+("300-IT"),
+("100-Sales");
 
 // TITLE SEEDS
 INSERT INTO title(title, salary, department_id)
 VALUES
-("Sr. V.P.", 100000.00, 1),
-("Engineer", 50000.00, 2),
-("Developer", 50000.00, 3),
-("Sales Executive", 75000.00, 4)
+("1-Sr. V.P.", 100000.00, 500),
+("2-Engineer", 50000.00, 200),
+("3-Developer", 50000.00, 300),
+("4-Sales Executive", 75000.00, 100),
+("5-Manager", 90000.00, 500);
 
 
 // EMPLOYEE SEEDS
 INSERT INTO employee(first_name, last_name, title_id)
 VALUES
-('John', 'Bosworth', null),
-('Gordon', 'Clark', 1),
-('Donna', 'Clark', 1),
-('Cameron', 'Howe', 2),
-('Joe', 'McMillan', 1)
+('John', 'Bosworth', 1),
+('Gordon', 'Clark', 2),
+('Donna', 'Clark', 2),
+('Cameron', 'Howe', 3),
+('Joe', 'McMillan', 4)
 

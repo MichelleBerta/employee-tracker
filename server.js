@@ -25,8 +25,8 @@ const startProgram = () => {
     .prompt({
       name: "action",
       type: "list",
-      message: "What would you like to do?",
-      choices: ["Add an employee", "Add a title", "Add a department", "Update an employee", "View all employees", "View all employees by title", "View all employees by department"],
+      message: "Please select an action to perform.",
+      choices: ["Add an employee", "Add a title", "Add a department", "Update an employee", "View all employees", "View all titles", "View all departments"],
     })
     .then((answer) => {
       switch (answer.action) {
@@ -50,11 +50,11 @@ const startProgram = () => {
           viewAllEmployees();
           break;
 
-        case "View all employees by title":
+        case "View all titles":
           viewAllTitles();
           break;
 
-        case "View all employees by department":
+        case "View all departments":
           viewAllDepartments();
           break;
 
@@ -74,7 +74,6 @@ function addDepartment() {
       message: "Department Name: ",
     })
     .then((answer) => {
-      console.log(answer.newDepartment);
       connection.query("INSERT INTO department (department_name) VALUES (?)", [answer.newDepartment], (err, results) => {
         if (err) {
           console.log(err);
@@ -84,7 +83,7 @@ function addDepartment() {
     });
 }
 
-// ADD TITLE - NEED TO ADD DEPARTMENT ID
+// ADD TITLE
 function addTitle() {
   inquirer
     .prompt([
@@ -98,9 +97,14 @@ function addTitle() {
         type: "input",
         message: "Salary: ",
       },
+      {
+        name: "newDepartment",
+        type: "input",
+        message: "Department: ",
+      },
     ])
     .then((answer) => {
-      connection.query("INSERT INTO title (title, salary,) VALUES (?, ?)", [answer.newTitle, answer.newSalary], (err, results) => {
+      connection.query("INSERT INTO title (title, salary, department_id) VALUES (?, ?, ?)", [answer.newTitle, answer.newSalary, 1], (err, results) => {
         if (err) {
           console.log(err);
         }
@@ -109,7 +113,7 @@ function addTitle() {
     });
 }
 
-// ADD EMPLOYEE - NEED TO ADD TITLE
+// ADD EMPLOYEE
 function addEmployee() {
   inquirer
     .prompt([
@@ -123,13 +127,47 @@ function addEmployee() {
         type: "input",
         message: "Last Name: ",
       },
+      {
+        name: "newTitle",
+        type: "list",
+        message: "Title: ",
+        choices: ["1-Sr. V.P.", "2-Engineer", "3-Developer", "4-Sales Executive", "5-Manager"],
+      },
     ])
+
     .then((answer) => {
-      connection.query("INSERT INTO employee (first_name, last_name,) VALUES (?, ?)", [answer.firstName, answer.lastName], (err, results) => {
+      connection.query("INSERT INTO employee (first_name, last_name, title_id) VALUES (?, ?, ?)", [answer.firstName, answer.lastName, answer.newTitle.split("-")[0]], (err, results) => {
         if (err) {
           console.log(err);
         }
         startProgram();
       });
     });
+}
+
+// VIEW ALL TITLES
+function viewAllTitles() {
+  connection.query("SELECT * FROM title;", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    startProgram();
+  });
+}
+
+// VIEW DEPARTMENTS
+function viewAllDepartments() {
+  connection.query("SELECT * FROM department;", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    startProgram();
+  });
+}
+
+// VIEW ALL EMPLOYEES
+function viewAllEmployees() {
+  connection.query("SELECT * FROM employee;", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    startProgram();
+  });
 }
