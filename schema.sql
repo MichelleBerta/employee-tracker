@@ -14,7 +14,7 @@ CREATE TABLE department (
 CREATE TABLE title (
   id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(20) NOT NULL,
-  salary DECIMAL(6, 4) NOT NULL,
+  salary DECIMAL(10, 4) NOT NULL,
   department_id INT NOT NULL,
   PRIMARY KEY (id)
 );
@@ -47,3 +47,14 @@ VALUES
 ("Engineer", 50000.00, 2),
 ("Developer", 50000.00, 3),
 ("Sales Executive", 75000.00, 4)
+
+
+// EMPLOYEE SEEDS
+INSERT INTO employee(first_name, last_name, title_id)
+VALUES
+('John', 'Bosworth', null),
+('Gordon', 'Clark', 1),
+('Donna', 'Clark', 1),
+('Cameron', 'Howe', 2),
+('Joe', 'McMillan', 1)
+

@@ -59,28 +59,23 @@ function addDepartment() {
       });
     });
 }
-
+// NEED TO ADD DEPARTMENT ID
 function addTitle() {
   inquirer
     .prompt([
       {
-      name: "newTitle",
-      type: "input",
-      message: "Title: ",
-    },
-    {
-      name: "newSalary",
-      type: "input",
-      message: "Salary: ",
-    },
-    {
-      name: "newDepartment",
-      type: "input",
-      message: "Department: ",
-    }
-  ])
+        name: "newTitle",
+        type: "input",
+        message: "Title: ",
+      },
+      {
+        name: "newSalary",
+        type: "input",
+        message: "Salary: ",
+      },
+    ])
     .then((answer) => {
-      connection.query("INSERT INTO title (title, salary, DEPARTMENT????) VALUES (?, ?, ?)", [answer.newTitle, answer.newSalary, answer.newDepartment], (err, results) => {
+      connection.query("INSERT INTO title (title, salary,) VALUES (?, ?)", [answer.newTitle, answer.newSalary], (err, results) => {
         if (err) {
           console.log(err);
         }
