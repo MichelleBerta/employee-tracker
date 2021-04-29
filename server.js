@@ -26,22 +26,45 @@ const startProgram = () => {
       name: "action",
       type: "list",
       message: "What would you like to do?",
-      choices: ["Add a department", "Add a title"],
+      choices: ["Add an employee", "Add a title", "Add a department", "Update an employee", "View all employees", "View all employees by title", "View all employees by department"]
     })
     .then((answer) => {
       switch (answer.action) {
-        case "Add a department":
-          addDepartment();
+        case "Add an employee":
+          addEmployee();
           break;
+
         case "Add a title":
           addTitle();
           break;
+
+        case "Add a department":
+          addDepartment();
+          break;
+
+        case "Update an employee":
+          updateEmployee();
+          break;
+
+        case "View all employees":
+          viewAllEmployees();
+          break;
+
+        case "View all employees by title":
+          viewAllTitles();
+          break;
+
+        case "View all employees by department":
+          viewAllDepartments();
+          break;
+
         default:
           console.log(`Invalid action: ${answer.action}`);
           break;
       }
     });
 };
+
 function addDepartment() {
   inquirer
     .prompt({
