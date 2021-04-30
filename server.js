@@ -176,42 +176,43 @@ function viewAllEmployees() {
 const updateEmployee = () => {
   connection.query("SELECT first_name, last_name FROM employee", (err, results) => {
     if (err) throw err;
-    inquirer.prompt([
-      {
-        name: "choice",
-        type: "rawlist",
-        choices() {
-          const choiceArray = [];
-          results.forEach(({ first_name, last_name }) => {
-            choiceArray.push(`${first_name} ${last_name}`);
-          });
-          return choiceArray;
+    inquirer
+      .prompt([
+        {
+          name: "choice",
+          type: "rawlist",
+          choices() {
+            const choiceArray = [];
+            results.forEach(({ first_name, last_name }, i) => {
+              choiceArray.push({ name: `${first_name} ${last_name}`, value: i + 1 });
+            });
+            return choiceArray;
+          },
+          message: "Which employee would you like to update?",
         },
-        message: "Which employee would you like to update?",
-      },
-      {
-        name: "action",
-        type: "list",
-        message: "What do you need to update?",
-        choices: ["Change title"],
-      },
-
-      // .then((answer) => {
-      //   switch (answer.action) {
-      //     case "Change title":
-      //       changeTitle();
-      //       break;
-      //       default:
-      //       console.log(`Invalid action: ${answer.action}`);
-      //       break;
-      //   }
-      // }),
-    ]);
+        {
+          name: "action",
+          type: "list",
+          message: "What do you need to update?",
+          choices: ["Change title"],
+        },
+      ])
+      .then((answer) => {
+        console.log(answer);
+        switch (answer.action) {
+          case "Change title":
+            changeTitle(answer.choice);
+            break;
+          default:
+            console.log(`Invalid action: ${answer.action}`);
+            break;
+        }
+      });
   });
 };
 
 // CHANGE TITLE
-function changeTitle() {
+function changeTitle(employeeId) {
   inquirer
     .prompt({
       name: "newTitle",
@@ -220,7 +221,7 @@ function changeTitle() {
       choices: ["1-Sr. V.P.", "2-Engineer", "3-Developer", "4-Sales Executive", "5-Manager"],
     })
     .then((answer) => {
-      connection.query("INSERT INTO employee (title_id) VALUES (?)", [answer.newTitle.split("-")[0]], (err, results) => {
+      connection.query("UPDATE employee SET title_id=? WHERE id=?", [answer.newTitle.split("-")[0], employeeId], (err, results) => {
         if (err) {
           console.log(err);
         }
