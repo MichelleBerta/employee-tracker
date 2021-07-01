@@ -2,9 +2,8 @@
 
 ## Table of Contents
 * [Description](#description)
-* [Technology](#technology)
-* [Screenshots](#screenshots)
 * [Demonstration](#demonstration)
+* [Technology](#technology)
 
 ## Description
 The employee tracker is a command-line application that allows the user to 
